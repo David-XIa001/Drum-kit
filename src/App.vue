@@ -16,7 +16,7 @@
         className="audio"
         preload="auto"
         :ref="'myAuto' + item.key"
-        :src="'/' + item.value + '.wav'"
+        :src="'./' + item.value + '.wav'"
       />
     </div>
   </div>
