@@ -32,71 +32,30 @@
       />
     </div>
   </div>
+  <div class="start-btn" @click="start">{{ isStart ? "暂停" : "开始" }}</div>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      isStart: null,
+      left: 0,
       voiceArr: [
         { key: "A", value: "clap" },
         { key: "S", value: "hihat" },
         { key: "D", value: "kick" },
         { key: "F", value: "openhat" },
-        { key: "H", value: "boom" },
-        { key: "I", value: "ride" },
+        { key: "G", value: "boom" },
+        { key: "H", value: "ride" },
         { key: "J", value: "snare" },
         { key: "K", value: "tom" },
         { key: "L", value: "tink" },
       ],
       music: [
         {
-          key: "A",
-          left: 0,
-        },
-        {
           key: "S",
-          left: 50,
-        },
-        {
-          key: "J",
-          left: 30,
-        },
-        {
-          key: "D",
-          left: 80,
-        },
-        {
-          key: "A",
-          left: 0,
-        },
-        {
-          key: "S",
-          left: 50,
-        },
-        {
-          key: "J",
-          left: 30,
-        },
-        {
-          key: "D",
-          left: 80,
-        },
-        {
-          key: "A",
-          left: 0,
-        },
-        {
-          key: "S",
-          left: 50,
-        },
-        {
-          key: "J",
-          left: 30,
-        },
-        {
-          key: "D",
-          left: 80,
+          left: 150,
         },
       ],
     };
@@ -109,15 +68,39 @@ export default {
       audio.currentTime = 0; // 每次播放之后都使音频播放进度归零
       audio.play(); // 播放相应音效
     },
+    start() {
+      if (this.isStart) {
+        clearInterval(this.isStart);
+        this.isStart = null;
+      } else {
+        const music = this.$refs.music;
+        this.isStart = setInterval(() => {
+          music.style.left = this.left + "px";
+          this.left = this.left - 3;
+        }, 16);
+      }
+    },
+    getRandomMusic(){
+      for (let i = 0; i < 1000; i++) {
+          let randomKey = Math.floor(Math.random() * 10)
+          if (randomKey < 9) {
+            let key = this.voiceArr[randomKey].key
+                      let randomLeft = Math.floor(Math.random() * 100)
+          let obj = {
+              key: key,
+              left: randomLeft,
+            }
+            this.music.push(obj)
+          }
+
+
+      }
+
+    }
   },
   mounted() {
     window.addEventListener("keydown", this.palySound);
-    const music = this.$refs.music;
-    let left = 0;
-    setInterval(() => {
-      music.style.left = left + "px";
-      left = left - 3;
-    }, 16);
+    this.getRandomMusic()
   },
 };
 </script>
@@ -172,5 +155,17 @@ export default {
 .dis {
   height: 20px;
   margin-top: -10px;
+}
+.start-btn {
+  width: 188px;
+  height: 88px;
+  color: yellowgreen;
+  font-size: 26px;
+  font-weight: 500;
+  cursor: pointer;
+  background: red;
+  line-height: 88px;
+  margin: 0 auto;
+  margin-top: 88px;
 }
 </style>
