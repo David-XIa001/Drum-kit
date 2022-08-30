@@ -32,6 +32,11 @@
       />
     </div>
   </div>
+  <div class="hard">
+    <div @click="()=>this.changeHard(1.5)" :class="'esay ' + (hard == 1.5 && 'active' )">简单</div>
+    <div @click="()=>this.changeHard(2)" :class="'mid ' + (hard == 2 && 'active' )">中等</div>
+    <div @click="()=>this.changeHard(4)" :class="'esay ' + (hard == 4 && 'active' )">困难</div>
+  </div>
   <div class="start-btn" @click="start">{{ isStart ? "暂停" : "开始" }}</div>
 </template>
 
@@ -41,6 +46,7 @@ export default {
     return {
       isStart: null,
       left: 0,
+      hard:2,
       voiceArr: [
         { key: "A", value: "clap" },
         { key: "S", value: "hihat" },
@@ -61,6 +67,9 @@ export default {
     };
   },
   methods: {
+    changeHard(num){
+      this.hard = num
+    },
     palySound(event) {
       let key = event.key.toUpperCase();
       console.log("key =", key);
@@ -76,7 +85,7 @@ export default {
         const music = this.$refs.music;
         this.isStart = setInterval(() => {
           music.style.left = this.left + "px";
-          this.left = this.left - 3;
+          this.left = this.left - this.hard;
         }, 16);
       }
     },
@@ -136,7 +145,7 @@ export default {
 .content {
   display: inline-block;
   height: 100%;
-  width: 50px;
+  width: 30px;
   line-height: 50px;
   background-color: #fff;
   color: #000;
@@ -168,4 +177,24 @@ export default {
   margin: 0 auto;
   margin-top: 88px;
 }
+.hard{
+  width: 300px;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 30px;
+  display: flex;
+}
+.esay,.mid, .high{
+  width: 100px;
+  height: 100%;
+  text-align: center;
+  line-height: 50px;
+  border: 1px solid #666;
+  background: #999;
+  cursor: pointer;
+}
+.active {
+  background: yellow;
+}
+
 </style>
